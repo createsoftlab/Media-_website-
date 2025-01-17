@@ -19,8 +19,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'role',
         'email',
         'password',
+        'username',
+        'pro_image',
+        'bio'
     ];
 
     /**
@@ -40,6 +44,37 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
     ];
+
+    public function galleries()
+    {
+        return $this->hasMany(Gallery::class, 'user_id'); // Assuming 'user_id' is the foreign key
+    }
+
+    public function eventPosts()
+    {
+        return $this->hasMany(EventPost::class, 'user_id'); // Assuming 'user_id' is the foreign key
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+     /**
+     * Relationship with event comments.
+     */
+    public function eventComments()
+    {
+        return $this->hasMany(EventComment::class, 'user_id');
+    }
+
+    /**
+     * Relationship with event replies.
+     */
+    public function eventReplies()
+    {
+        return $this->hasMany(EventReply::class, 'user_id');
+    }
+
 }
